@@ -1,3 +1,10 @@
+# ignore properties file
+.env
+application-dev.yml
+
+# database info
+db/
+
 HELP.md
 .gradle
 build/
