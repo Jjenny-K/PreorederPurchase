@@ -1,0 +1,15 @@
+dependencies {
+    implementation project(":module_core")
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    runtimeOnly 'com.mysql:mysql-connector-j:8.0.33'
+}
+
+tasks.named('bootJar'){
+    enabled = true
+}
+
+tasks.named('jar'){
+    enabled = false
+}
