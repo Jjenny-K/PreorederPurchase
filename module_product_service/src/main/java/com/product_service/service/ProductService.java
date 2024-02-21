@@ -1,6 +1,6 @@
 package com.product_service.service;
 
-import com.core.dto.request.ProductCreateRequest;
+import com.product_service.dto.request.ProductCreateRequest;
 import com.product_service.entity.Product;
 import com.product_service.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;

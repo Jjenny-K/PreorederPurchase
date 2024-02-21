@@ -1,6 +1,6 @@
 package com.reserved_product_service.service;
 
-import com.core.dto.request.ProductCreateRequest;
+import com.reserved_product_service.dto.request.ReservedProductCreateRequest;
 import com.reserved_product_service.entity.ReservedProduct;
 import com.reserved_product_service.repository.ReservedProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,18 +19,19 @@ public class ReservedProductService {
 
     // 상품 등록
     @Transactional
-    public String create(Long authorizedUserId, ProductCreateRequest productCreateRequest) {
-        if (productCreateRequest.getReservedStart() == null | productCreateRequest.getReservedEnd() == null) {
+    public String create(Long authorizedUserId, ReservedProductCreateRequest reservedProductCreateRequest) {
+        if (reservedProductCreateRequest.getReservedStart() == null |
+                reservedProductCreateRequest.getReservedEnd() == null) {
             throw new RuntimeException("예약 시간이 비어있습니다.");
         }
 
         ReservedProduct reservedProduct = ReservedProduct.builder()
                 .userId(authorizedUserId)
-                .title(productCreateRequest.getTitle())
-                .content(productCreateRequest.getContent())
-                .price(productCreateRequest.getPrice())
-                .reservedStart(productCreateRequest.getReservedStart())
-                .reservedEnd(productCreateRequest.getReservedEnd())
+                .title(reservedProductCreateRequest.getTitle())
+                .content(reservedProductCreateRequest.getContent())
+                .price(reservedProductCreateRequest.getPrice())
+                .reservedStart(reservedProductCreateRequest.getReservedStart())
+                .reservedEnd(reservedProductCreateRequest.getReservedEnd())
                 .build();
 
         reservedProductRepository.save(reservedProduct);

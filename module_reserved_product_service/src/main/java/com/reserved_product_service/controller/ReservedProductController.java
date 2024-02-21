@@ -1,6 +1,6 @@
 package com.reserved_product_service.controller;
 
-import com.core.dto.request.ProductCreateRequest;
+import com.reserved_product_service.dto.request.ReservedProductCreateRequest;
 import com.reserved_product_service.dto.response.ReservedProductResponse;
 import com.reserved_product_service.entity.ReservedProduct;
 import com.reserved_product_service.service.ReservedProductService;
@@ -21,12 +21,12 @@ public class ReservedProductController {
     private final ReservedProductService reservedProductService;
 
     // 상품 등록
-    @PostMapping("/create")
+    @PostMapping()
     public ResponseEntity<?> create(HttpServletRequest httpServletRequest,
-                                    @Valid @RequestBody ProductCreateRequest productCreateRequest) {
+                                    @Valid @RequestBody ReservedProductCreateRequest reservedProductCreateRequest) {
         Long authorizedUserId = Long.valueOf(httpServletRequest.getHeader("X-USER-ID"));
 
-        String productTitle = reservedProductService.create(authorizedUserId, productCreateRequest);
+        String productTitle = reservedProductService.create(authorizedUserId, reservedProductCreateRequest);
 
         Map<String, Object> responseBody = new HashMap<>();
         responseBody.put("message", productTitle + "-> 상픔 등록 성공");

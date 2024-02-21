@@ -1,9 +1,9 @@
 package com.product_service.controller;
 
-import com.core.dto.request.ProductCreateRequest;
 import com.core.dto.response.ProductListResponse;
 import com.core.entity.type.ProductType;
 import com.product_service.client.ReservedProductClient;
+import com.product_service.dto.request.ProductCreateRequest;
 import com.product_service.dto.response.ProductResponse;
 import com.product_service.entity.Product;
 import com.product_service.service.ProductService;
@@ -25,7 +25,7 @@ public class ProductController {
     private final ReservedProductClient reservedProductClient;
 
     // 상품 등록
-    @PostMapping("/create")
+    @PostMapping()
     public ResponseEntity<?> create(HttpServletRequest httpServletRequest,
                                     @Valid @RequestBody ProductCreateRequest productCreateRequest) {
         Long authorizedUserId = Long.valueOf(httpServletRequest.getHeader("X-USER-ID"));
