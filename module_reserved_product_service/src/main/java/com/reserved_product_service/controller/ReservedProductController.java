@@ -21,7 +21,7 @@ public class ReservedProductController {
     private final ReservedProductService reservedProductService;
 
     // 상품 등록
-    @PostMapping()
+    @PostMapping("/create")
     public ResponseEntity<?> create(HttpServletRequest httpServletRequest,
                                     @Valid @RequestBody ProductCreateRequest productCreateRequest) {
         Long authorizedUserId = Long.valueOf(httpServletRequest.getHeader("X-USER-ID"));

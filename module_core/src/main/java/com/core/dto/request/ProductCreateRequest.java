@@ -24,9 +24,6 @@ public class ProductCreateRequest {
     @NotNull
     private Integer price;
 
-    @NotNull
-    private ProductType productType;
-
     @DateTimeFormat(pattern = "yyyy-MM-dd 'T' HH:mm:ss")
     private LocalDateTime reservedStart;
 
