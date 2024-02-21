@@ -1,7 +1,7 @@
-package com.product_service.dto.response;
+package com.reserved_product_service.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.product_service.entity.ReservedProduct;
+import com.reserved_product_service.entity.ReservedProduct;
 import lombok.Builder;
 import lombok.Getter;
 

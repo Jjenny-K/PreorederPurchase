@@ -1,4 +1,4 @@
-package com.product_service.entity;
+package com.reserved_product_service.entity;
 
 import com.core.entity.core.BaseCreatedUpdated;
 import jakarta.persistence.*;

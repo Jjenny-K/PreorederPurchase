@@ -1,8 +1,8 @@
-package com.product_service.dto.response;
+package com.reserved_product_service.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.core.entity.type.ProductType;
-import com.product_service.entity.Product;
+import com.reserved_product_service.entity.ReservedProduct;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -21,14 +21,14 @@ public class ProductListResponse {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd 'T' HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;
 
-    public static ProductListResponse from(Product product) {
-        if (product == null) return null;
+    public static ProductListResponse from(ReservedProduct reservedProduct) {
+        if (reservedProduct == null) return null;
 
         return ProductListResponse.builder()
-                .title(product.getTitle())
-                .price(product.getPrice())
-                .productType(ProductType.NORMAL)
-                .createdAt(product.getCreatedAt())
+                .title(reservedProduct.getTitle())
+                .price(reservedProduct.getPrice())
+                .productType(ProductType.RESERVED)
+                .createdAt(reservedProduct.getCreatedAt())
                 .build();
     }
 
