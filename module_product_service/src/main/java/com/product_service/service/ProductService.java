@@ -1,11 +1,11 @@
-package com.module_product_service.service;
+package com.product_service.service;
 
-import com.module_core.entity.type.ProductType;
-import com.module_product_service.dto.request.ProductCreateRequest;
-import com.module_product_service.entity.Product;
-import com.module_product_service.entity.ReservedProduct;
-import com.module_product_service.repository.ProductRepository;
-import com.module_product_service.repository.ReservedProductRepository;
+import com.core.entity.type.ProductType;
+import com.product_service.dto.request.ProductCreateRequest;
+import com.product_service.entity.Product;
+import com.product_service.entity.ReservedProduct;
+import com.product_service.repository.ProductRepository;
+import com.product_service.repository.ReservedProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,13 +1,13 @@
-package com.module_product_service.controller;
+package com.product_service.controller;
 
-import com.module_core.entity.type.ProductType;
-import com.module_product_service.dto.request.ProductCreateRequest;
-import com.module_product_service.dto.response.ProductListResponse;
-import com.module_product_service.dto.response.ProductResponse;
-import com.module_product_service.dto.response.ReservedProductResponse;
-import com.module_product_service.entity.Product;
-import com.module_product_service.entity.ReservedProduct;
-import com.module_product_service.service.ProductService;
+import com.core.entity.type.ProductType;
+import com.product_service.dto.request.ProductCreateRequest;
+import com.product_service.dto.response.ProductListResponse;
+import com.product_service.dto.response.ProductResponse;
+import com.product_service.dto.response.ReservedProductResponse;
+import com.product_service.entity.Product;
+import com.product_service.entity.ReservedProduct;
+import com.product_service.service.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

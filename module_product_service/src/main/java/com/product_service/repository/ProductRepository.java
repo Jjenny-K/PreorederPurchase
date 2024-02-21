@@ -1,6 +1,6 @@
-package com.module_product_service.repository;
+package com.product_service.repository;
 
-import com.module_product_service.entity.Product;
+import com.product_service.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

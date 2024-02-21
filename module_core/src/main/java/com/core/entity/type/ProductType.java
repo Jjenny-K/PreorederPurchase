@@ -1,4 +1,4 @@
-package com.module_core.entity.type;
+package com.core.entity.type;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

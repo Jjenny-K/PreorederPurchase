@@ -1,6 +1,6 @@
-package com.module_product_service.entity;
+package com.product_service.entity;
 
-import com.module_core.entity.core.BaseCreatedUpdated;
+import com.core.entity.core.BaseCreatedUpdated;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;

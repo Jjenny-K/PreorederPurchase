@@ -1,7 +1,6 @@
-package com.module_product_service.dto.request;
+package com.product_service.dto.request;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.module_core.entity.type.ProductType;
+import com.core.entity.type.ProductType;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
