@@ -1,4 +1,4 @@
-package com.product_service.dto.request;
+package com.core.dto.request;
 
 import com.core.entity.type.ProductType;
 import jakarta.validation.constraints.NotNull;
@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Builder
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class ProductCreateRequest {
 

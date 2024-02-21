@@ -1,6 +1,6 @@
 package com.reserved_product_service.controller;
 
-import com.reserved_product_service.dto.request.ProductCreateRequest;
+import com.core.dto.request.ProductCreateRequest;
 import com.reserved_product_service.dto.response.ReservedProductResponse;
 import com.reserved_product_service.entity.ReservedProduct;
 import com.reserved_product_service.service.ReservedProductService;

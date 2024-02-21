@@ -1,7 +1,6 @@
 package com.reserved_product_service.service;
 
-import com.core.entity.type.ProductType;
-import com.reserved_product_service.dto.request.ProductCreateRequest;
+import com.core.dto.request.ProductCreateRequest;
 import com.reserved_product_service.entity.ReservedProduct;
 import com.reserved_product_service.repository.ReservedProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -9,8 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -39,12 +36,6 @@ public class ReservedProductService {
         reservedProductRepository.save(reservedProduct);
 
         return reservedProduct.getTitle();
-    }
-
-    // 에약 상품 목록 조회
-    @Transactional(readOnly = true)
-    public List<ReservedProduct> getReservedProductList() {
-        return reservedProductRepository.findAll();
     }
 
     // 예약 상품 상세 조회

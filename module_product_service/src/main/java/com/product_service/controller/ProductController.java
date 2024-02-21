@@ -1,6 +1,9 @@
 package com.product_service.controller;
 
-import com.product_service.dto.request.ProductCreateRequest;
+import com.core.dto.request.ProductCreateRequest;
+import com.core.dto.response.ProductListResponse;
+import com.core.entity.type.ProductType;
+import com.product_service.client.ReservedProductClient;
 import com.product_service.dto.response.ProductResponse;
 import com.product_service.entity.Product;
 import com.product_service.service.ProductService;
@@ -19,6 +22,7 @@ import java.util.*;
 public class ProductController {
 
     private final ProductService productService;
+    private final ReservedProductClient reservedProductClient;
 
     // 상품 등록
     @PostMapping()
@@ -34,20 +38,35 @@ public class ProductController {
         return new ResponseEntity<>(responseBody, HttpStatus.CREATED);
     }
 
-//    // 상품 목록 조회
-//    @GetMapping()
-//    public ResponseEntity<List<ProductListResponse>> getProductTotalList() {
-//        List<Product> productList = productService.getProductList();
-//        List<ReservedProduct> reservedProductList = productService.getReservedProductList();
-//
-//        List<ProductListResponse> productTotalList = new ArrayList<>();
-//        productTotalList.addAll(productList.stream().map(ProductListResponse::from).toList());
-//        productTotalList.addAll(reservedProductList.stream().map(ProductListResponse::from).toList());
-//
-//        productTotalList.sort(Comparator.comparing(ProductListResponse::getCreatedAt).reversed());
-//
-//        return ResponseEntity.ok().body(productTotalList);
-//    }
+    // 상품 목록 조회
+    @GetMapping()
+    public ResponseEntity<List<ProductListResponse>> getProductTotalList() {
+        List<ProductListResponse> productTotalList = new ArrayList<>();
+
+        productTotalList.addAll(castingProductList(productService.getProductList()));
+        productTotalList.addAll(reservedProductClient.getReservedProductList());
+
+        productTotalList.sort(Comparator.comparing(ProductListResponse::getCreatedAt).reversed());
+
+        return ResponseEntity.ok().body(productTotalList);
+    }
+
+    private List<ProductListResponse> castingProductList(List<Product> products) {
+        List<ProductListResponse> reservedProductList = new ArrayList<>();
+
+        for (Product p : products) {
+            ProductListResponse pl = ProductListResponse.builder()
+                    .title(p.getTitle())
+                    .price(p.getPrice())
+                    .productType(ProductType.NORMAL)
+                    .createdAt(p.getCreatedAt())
+                    .build();
+
+            reservedProductList.add(pl);
+        }
+
+        return reservedProductList;
+    }
 
     // 일반 상품 상세 조회
     @GetMapping("/{productId}")
