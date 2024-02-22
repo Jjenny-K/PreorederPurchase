@@ -1,0 +1,30 @@
+package com.stock_service.controller;
+
+import com.stock_service.dto.request.ProductStockCreateRequest;
+import com.stock_service.service.InternalProductStockService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/internal/productStocks")
+public class InternalProductStockController {
+
+    private final InternalProductStockService internalProductStockService;
+
+    // 일반 상품 재고 등록
+    @PostMapping()
+    public ResponseEntity<?> createProductStock(@RequestBody ProductStockCreateRequest productStockCreateRequest) {
+        internalProductStockService.createProductStock(productStockCreateRequest);
+
+        return ResponseEntity.ok().build();
+    }
+
+    // 일반 상품 재고 조회
+    @GetMapping("/{productId}")
+    public ResponseEntity<?> getProductStock(@PathVariable("productId") String productId) {
+        return ResponseEntity.ok().body(internalProductStockService.getProductStock(Long.parseLong(productId)));
+    }
+
+}
