@@ -20,7 +20,7 @@ public class ReservedProductController {
 
     private final ReservedProductService reservedProductService;
 
-    // 상품 등록
+    // 예약 상품 등록
     @PostMapping()
     public ResponseEntity<?> create(HttpServletRequest httpServletRequest,
                                     @Valid @RequestBody ReservedProductCreateRequest reservedProductCreateRequest) {
@@ -35,10 +35,10 @@ public class ReservedProductController {
     }
 
     // 예약 상품 상세 조회
-    @GetMapping("/{productId}")
-    public ResponseEntity<?> getProduct(@PathVariable("productId") String productId) {
+    @GetMapping("/{reservedProductId}")
+    public ResponseEntity<?> getReservedProduct(@PathVariable("reservedProductId") String reservedProductId) {
         ReservedProduct reservedProduct =
-                reservedProductService.getReservedProduct(Long.valueOf(productId));
+                reservedProductService.getReservedProduct(Long.valueOf(reservedProductId));
 
         return new ResponseEntity<>(ReservedProductResponse.from(reservedProduct), HttpStatus.OK);
     }

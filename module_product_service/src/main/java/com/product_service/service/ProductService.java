@@ -1,6 +1,8 @@
 package com.product_service.service;
 
+import com.product_service.client.StockClient;
 import com.product_service.dto.request.ProductCreateRequest;
+import com.product_service.dto.request.ProductStockCreateRequest;
 import com.product_service.entity.Product;
 import com.product_service.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +20,9 @@ public class ProductService {
     private static final Logger logger = LoggerFactory.getLogger(ProductService.class);
 
     private final ProductRepository productRepository;
+    private final StockClient stockClient;
 
-    // 상품 등록
+    // 일반 상품 등록
     @Transactional
     public String create(Long authorizedUserId, ProductCreateRequest productCreateRequest) {
         Product product = Product.builder()
@@ -29,7 +32,11 @@ public class ProductService {
                 .price(productCreateRequest.getPrice())
                 .build();
 
-        productRepository.save(product);
+        Product savedProduct = productRepository.save(product);
+
+        stockClient.createProductStock(
+                new ProductStockCreateRequest(
+                        savedProduct.getId(), productCreateRequest.getStock()));
 
         return product.getTitle();
     }

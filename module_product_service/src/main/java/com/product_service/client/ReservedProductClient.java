@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
-@FeignClient(name = "ReservedProductClient", url = "${internal.client.uri}")
+@FeignClient(name = "reservedProductClient", url = "${internal.client.uri}")
 public interface ReservedProductClient {
 
-    @GetMapping("/reservedProducts/getReservedProductList")
+    @GetMapping("/api/internal/reservedProducts/getReservedProductList")
     List<ProductListResponse> getReservedProductList();
 
 }

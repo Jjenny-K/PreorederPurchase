@@ -1,11 +1,9 @@
 package com.product_service.dto.request;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Builder
@@ -21,6 +19,11 @@ public class ProductCreateRequest {
     private String content;
 
     @NotNull
+    @Min(value = 1)
     private Integer price;
+
+    @NotNull
+    @Min(value = 0)
+    private Integer stock;
 
 }

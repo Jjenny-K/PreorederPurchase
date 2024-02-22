@@ -20,7 +20,8 @@ public class InternalReservedProductController {
 
     private final InternalReservedProductService internalReservedProductService;
 
-    @GetMapping("getReservedProductList")
+    // 예약 상품 목록 조회
+    @GetMapping("/getReservedProductList")
     public ResponseEntity<?> getReservedProductList() {
         List<ReservedProduct> reservedProducts = internalReservedProductService.getReservedProductList();
 

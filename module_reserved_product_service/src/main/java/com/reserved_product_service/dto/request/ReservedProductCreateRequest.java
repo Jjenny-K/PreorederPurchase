@@ -1,5 +1,6 @@
 package com.reserved_product_service.dto.request;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -21,7 +22,12 @@ public class ReservedProductCreateRequest {
     private String content;
 
     @NotNull
+    @Min(1)
     private Integer price;
+
+    @NotNull
+    @Min(0)
+    private Integer stock;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd 'T' HH:mm:ss")
     private LocalDateTime reservedStart;

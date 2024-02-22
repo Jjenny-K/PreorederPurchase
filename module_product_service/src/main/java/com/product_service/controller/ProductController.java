@@ -24,7 +24,7 @@ public class ProductController {
     private final ProductService productService;
     private final ReservedProductClient reservedProductClient;
 
-    // 상품 등록
+    // 일반 상품 등록
     @PostMapping()
     public ResponseEntity<?> create(HttpServletRequest httpServletRequest,
                                     @Valid @RequestBody ProductCreateRequest productCreateRequest) {
@@ -39,6 +39,7 @@ public class ProductController {
     }
 
     // 상품 목록 조회
+    // 일반 상품 + 예약 상품
     @GetMapping()
     public ResponseEntity<List<ProductListResponse>> getProductTotalList() {
         List<ProductListResponse> productTotalList = new ArrayList<>();
