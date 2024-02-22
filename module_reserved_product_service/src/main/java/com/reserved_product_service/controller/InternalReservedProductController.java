@@ -4,9 +4,11 @@ import com.core.dto.response.ProductListResponse;
 import com.core.entity.type.ProductType;
 import com.reserved_product_service.entity.ReservedProduct;
 import com.reserved_product_service.service.InternalReservedProductService;
+import com.reserved_product_service.service.ReservedProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -43,6 +45,15 @@ public class InternalReservedProductController {
         }
 
         return reservedProductList;
+    }
+
+    // 예약 상품 가격 조회
+    @GetMapping("/{reservedProductId}/getPrice")
+    public ResponseEntity<?> findReservedProduct(@PathVariable("reservedProductId") String reservedProductId) {
+        Integer reservedProductPrice =
+                internalReservedProductService.getReservedProductPrice(Long.valueOf(reservedProductId));
+
+        return ResponseEntity.ok().body(reservedProductPrice);
     }
 
 }
