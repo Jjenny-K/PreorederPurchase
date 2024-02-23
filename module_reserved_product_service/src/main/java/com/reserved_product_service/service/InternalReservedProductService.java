@@ -24,4 +24,13 @@ public class InternalReservedProductService {
         return reservedProductRepository.findAll();
     }
 
+    // 예약 상품 가격 조회
+    @Transactional(readOnly = true)
+    public Integer getReservedProductPrice(Long reservedProductId) {
+        ReservedProduct reservedProduct = reservedProductRepository.findById(reservedProductId)
+                .orElseThrow(() -> new RuntimeException("상품이 존재하지 않습니다."));
+
+        return reservedProduct.getPrice();
+    }
+
 }

@@ -38,4 +38,22 @@ public class InternalReservedProductStockService {
         return reservedProductStock.getStock();
     }
 
+    // 예약 상품 재고 감소
+    @Transactional
+    public void decreasedReservedProductStock(Long productId, Integer quantity) {
+        ReservedProductStock reservedProductStock =
+                reservedProductStockRepository.findByProductId(productId)
+                        .orElseThrow(() -> new RuntimeException("해당 상품의 재고가 존재하지 않습니다."));
+
+        if (reservedProductStock.getStock() <= 0) {
+            throw new RuntimeException("해당 상품의 재고가 존재하지 않습니다.");
+        }
+
+        if (reservedProductStock.getStock() < quantity) {
+            throw new RuntimeException("해당 상품의 재고가 부족합니다.");
+        }
+
+        reservedProductStock.updateStock(quantity);
+    }
+
 }

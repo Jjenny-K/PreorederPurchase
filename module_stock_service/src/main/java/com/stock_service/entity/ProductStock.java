@@ -21,4 +21,8 @@ public class ProductStock extends BaseCreatedUpdated {
     @Column(name = "stock", nullable = false)
     private Integer stock;
 
+    public void updateStock(Integer quantity) {
+        if(quantity != null) this.stock = this.stock - quantity;
+    }
+
 }
