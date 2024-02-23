@@ -46,4 +46,12 @@ public class InternalOrderController {
         return ResponseEntity.ok().build();
     }
 
+    // 주문서 삭제
+    @DeleteMapping("{orderId}")
+    public ResponseEntity<?> deleteOrder(@PathVariable("orderId") String orderId) {
+        internalOrderService.deleteOrder(Long.valueOf(orderId));
+
+        return ResponseEntity.status(204).build();
+    }
+
 }

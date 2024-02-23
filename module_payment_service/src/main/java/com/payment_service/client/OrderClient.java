@@ -20,4 +20,7 @@ public interface OrderClient {
     void updateOrder(@PathVariable("orderId") String orderId,
                      @RequestBody OrderUpdateRequest orderUpdateRequest);
 
+    @DeleteMapping("/api/internal/orders/{orderId}")
+    void deleteOrder(@PathVariable("orderId") String orderId);
+
 }

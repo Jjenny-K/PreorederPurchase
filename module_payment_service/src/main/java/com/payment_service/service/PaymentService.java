@@ -90,6 +90,13 @@ public class PaymentService {
         OrderCheckResponse order =
                 orderClient.checkOrder(String.valueOf(orderId), String.valueOf(authorizedUserId));
 
+        // 결제 실패 시나리오
+        if (Math.random() <= 0.2) {
+            orderClient.deleteOrder(String.valueOf(orderId));
+
+            throw new RuntimeException("결제 실패");
+        }
+
         // 재고 감소
         switch (order.getProductType()) {
             case NORMAL ->

@@ -56,4 +56,10 @@ public class InternalOrderService {
         orderRepository.save(order);
     }
 
+    // 주문서 삭제
+    @Transactional
+    public void deleteOrder(Long orderId) {
+        orderRepository.deleteById(orderId);
+    }
+
 }
