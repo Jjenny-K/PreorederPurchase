@@ -1,6 +1,7 @@
 package com.order_service.service;
 
 import com.order_service.dto.request.OrderCreateRequest;
+import com.order_service.dto.request.OrderUpdateRequest;
 import com.order_service.entity.Order;
 import com.order_service.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ public class InternalOrderService {
 
     private final OrderRepository orderRepository;
 
-    // 결제 진입 초기 주문 등록
+    // 결제 진입 주문서 발행
     @Transactional
     public void createOrder(OrderCreateRequest orderCreateRequest) {
         Order order = Order.builder()
@@ -27,6 +28,30 @@ public class InternalOrderService {
                 .quantity(orderCreateRequest.getQuantity())
                 .isOrdered(false)
                 .build();
+
+        orderRepository.save(order);
+    }
+
+    // 주문서 확인
+    @Transactional(readOnly = true)
+    public Order chekOrder(Long orderId, Long userId) {
+        Order order = orderRepository.findByIdAndUserId(orderId, userId)
+                .orElseThrow(() -> new RuntimeException("주문서가 존재하지 않습니다."));
+
+        if (order.getIsOrdered()) {
+            throw new RuntimeException("이미 결제 완료된 주문서입니다,");
+        }
+
+        return order;
+    }
+
+    // 주문서 업데이트
+    @Transactional
+    public void updateOrder(Long orderId, OrderUpdateRequest orderUpdateRequest) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("주문서가 존재하지 않습니다."));
+
+        order.updateOrder(orderUpdateRequest);
 
         orderRepository.save(order);
     }

@@ -1,5 +1,6 @@
 package com.payment_service.service;
 
+import com.core.dto.response.OrderCheckResponse;
 import com.core.entity.type.ProductType;
 import com.payment_service.client.OrderClient;
 import com.payment_service.client.ProductClient;
@@ -7,6 +8,10 @@ import com.payment_service.client.ReservedProductClient;
 import com.payment_service.client.StockClient;
 import com.payment_service.dto.request.EnterPaymentRequest;
 import com.payment_service.dto.request.OrderCreateRequest;
+import com.payment_service.dto.request.OrderUpdateRequest;
+import com.payment_service.dto.request.PaymentCreateRequest;
+import com.payment_service.entity.Payment;
+import com.payment_service.repository.PaymentRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +24,7 @@ public class PaymentService {
 
     private static final Logger logger = LoggerFactory.getLogger(PaymentService.class);
 
+    private final PaymentRepository paymentRepository;
     private final ProductClient productClient;
     private final ReservedProductClient reservedProductClient;
     private final StockClient stockClient;
@@ -31,7 +37,7 @@ public class PaymentService {
         // 구매 수량과 재고 비교
         Integer productStock = stockClient.getProductStock(String.valueOf(productId));
 
-        if (productStock == 0) {
+        if (productStock <= 0) {
             throw new RuntimeException("구매할 수 있는 상품이 없습니다.");
         }
 
@@ -58,7 +64,7 @@ public class PaymentService {
         // 구매 수량과 재고 비교
         Integer reservedProductStock = stockClient.getReservedProductStock(String.valueOf(reservedProductId));
 
-        if (reservedProductStock == 0) {
+        if (reservedProductStock <= 0) {
             throw new RuntimeException("구매할 수 있는 상품이 없습니다.");
         }
 
@@ -76,6 +82,37 @@ public class PaymentService {
                 reservedProductClient.getReservedProductPrice(String.valueOf(reservedProductId));
 
         return reservedProductPrice * enterPaymentRequest.getQuantity();
+    }
+
+    // 상품 결제
+    @Transactional
+    public void payment(Long authorizedUserId, Long orderId, PaymentCreateRequest paymentCreateRequest) {
+        OrderCheckResponse order =
+                orderClient.checkOrder(String.valueOf(orderId), String.valueOf(authorizedUserId));
+
+        // 재고 감소
+        switch (order.getProductType()) {
+            case NORMAL ->
+                    stockClient.decreasedProductStock(
+                            String.valueOf(order.getProductId()), String.valueOf(order.getQuantity()));
+
+            case RESERVED ->
+                    stockClient.decreasedReservedProductStock(
+                            String.valueOf(order.getProductId()), String.valueOf(order.getQuantity()));
+        }
+
+        // 결제서 발행
+        Payment payment = Payment.builder()
+                .userId(authorizedUserId)
+                .orderId(orderId)
+                .totalPayment(paymentCreateRequest.getTotalPayment())
+                .build();
+
+        Payment savedPayment = paymentRepository.save(payment);
+
+        // 주문서 업데이트
+        orderClient.updateOrder
+                (String.valueOf(orderId), new OrderUpdateRequest(savedPayment.getId(), true));
     }
 
 }

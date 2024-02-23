@@ -2,6 +2,7 @@ package com.order_service.entity;
 
 import com.core.entity.core.BaseCreatedUpdated;
 import com.core.entity.type.ProductType;
+import com.order_service.dto.request.OrderUpdateRequest;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -37,5 +38,10 @@ public class Order extends BaseCreatedUpdated {
 
     @Column(name = "isOrdered", nullable = false)
     private Boolean isOrdered;
+
+    public void updateOrder(OrderUpdateRequest orderUpdateRequest) {
+        if(orderUpdateRequest.getPaymentId() != null) this.paymentId = orderUpdateRequest.getPaymentId();
+        if(orderUpdateRequest.getIsOrdered() != null) this.isOrdered = orderUpdateRequest.getIsOrdered();
+    }
 
 }

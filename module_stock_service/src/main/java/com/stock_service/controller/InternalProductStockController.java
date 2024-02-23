@@ -27,4 +27,14 @@ public class InternalProductStockController {
         return ResponseEntity.ok().body(internalProductStockService.getProductStock(Long.parseLong(productId)));
     }
 
+    // 일반 상품 재고 감소
+    @PostMapping("/{productId}/decreasedStock")
+    public ResponseEntity<?> decreasedProductStock(@PathVariable("productId") String productId,
+                                                   @RequestParam(name = "quantity") String quantity) {
+        internalProductStockService.decreasedProductStock(
+                Long.valueOf(productId), Integer.valueOf(quantity));
+
+        return ResponseEntity.ok().build();
+    }
+
 }
