@@ -5,6 +5,9 @@ application-dev.yml
 # database info
 db/
 
+# request test script
+http_request_tool.py
+
 HELP.md
 .gradle
 build/
