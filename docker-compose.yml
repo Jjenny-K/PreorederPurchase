@@ -13,3 +13,17 @@ services:
     env_file:
       - ./.env
     restart: always
+
+  redis:
+    container_name: redis
+    image: redis:alpine
+    hostname: ${LOCAL_REDIS_HOST_NAME}
+    ports:
+      - ${LOCAL_REDIS_PORT}:6379
+    labels:
+      - "name=redis"
+      - "mode=standalone"
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    command: redis-server --port 6379
+    restart: always
