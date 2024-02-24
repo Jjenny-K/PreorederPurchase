@@ -18,12 +18,15 @@
 $ git clone https://github.com/Jjenny-K/PreorderPurchcase.git
 ```
 
-2-1. .env 파일을 root directory에 생성 후, MYSQL와 연동을 위한 정보를 저장합니다.
+2-1. .env 파일을 root directory에 생성 후, MYSQL, Redis와 연동을 위한 정보를 저장합니다.
 ```
 MYSQL_DATABASE='{local database name}'
 MYSQL_ROOT_USER='{local database user}'
 MYSQL_ROOT_PASSWORD='{local database password}'
 LOCAL_DB_PORT='{local database port}'
+
+LOCAL_REDIS_HOST_NAME='{local redis host name}'
+LOCAL_REDIS_PORT='{local redis port}'
 ```
 
 2-2. application-local.yml 파일을 classpath에 생성 후, local 프로젝트 환경 정보를 저장합니다.
@@ -34,6 +37,10 @@ spring:
     username: {local database user}
     password: {local database password}
     driver-class-name: com.mysql.cj.jdbc.Driver
+    
+  redis:
+    host: {local redis host name}
+    port: {local redis port}
     
     ...
 
