@@ -34,8 +34,8 @@ public class InternalOrderService {
 
     // 주문서 확인
     @Transactional(readOnly = true)
-    public Order chekOrder(Long orderId, Long userId) {
-        Order order = orderRepository.findByIdAndUserId(orderId, userId)
+    public Order getOrder(Long orderId) {
+        Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("주문서가 존재하지 않습니다."));
 
         if (order.getIsOrdered()) {

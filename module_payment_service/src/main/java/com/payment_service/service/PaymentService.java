@@ -86,9 +86,8 @@ public class PaymentService {
 
     // 상품 결제
     @Transactional
-    public void payment(Long authorizedUserId, Long orderId, PaymentCreateRequest paymentCreateRequest) {
-        OrderCheckResponse order =
-                orderClient.checkOrder(String.valueOf(orderId), String.valueOf(authorizedUserId));
+    public void payment(Long orderId, PaymentCreateRequest paymentCreateRequest) {
+        OrderCheckResponse order = orderClient.getOrder(String.valueOf(orderId));
 
         // 결제 실패 시나리오
         if (Math.random() <= 0.2) {
@@ -110,7 +109,7 @@ public class PaymentService {
 
         // 결제서 발행
         Payment payment = Payment.builder()
-                .userId(authorizedUserId)
+                .userId(order.getUserId())
                 .orderId(orderId)
                 .totalPayment(paymentCreateRequest.getTotalPayment())
                 .build();

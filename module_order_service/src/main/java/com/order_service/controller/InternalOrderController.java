@@ -26,13 +26,11 @@ public class InternalOrderController {
 
     // 주문서 확인
     @GetMapping("/{orderId}")
-    public ResponseEntity<?> checkOrder(@PathVariable("orderId") String orderId,
-                                        @RequestParam(name = "userId") String userId) {
-        Order order =
-                internalOrderService.chekOrder(Long.valueOf(orderId), Long.valueOf(userId));
+    public ResponseEntity<?> getOrder(@PathVariable("orderId") String orderId) {
+        Order order = internalOrderService.getOrder(Long.valueOf(orderId));
 
-        OrderCheckResponse orderCheckResponse =
-                new OrderCheckResponse(order.getProductType(), order.getProductId(), order.getQuantity());
+        OrderCheckResponse orderCheckResponse = new OrderCheckResponse(
+                order.getId(), order.getProductType(), order.getProductId(), order.getQuantity());
 
         return ResponseEntity.ok().body(orderCheckResponse);
     }

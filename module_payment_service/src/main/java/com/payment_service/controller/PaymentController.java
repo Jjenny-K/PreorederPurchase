@@ -54,12 +54,10 @@ public class PaymentController {
 
     // 상품 결제
     @PostMapping("/orders/{orderId}")
-    public ResponseEntity<?> payment(HttpServletRequest httpServletRequest,
-                                     @PathVariable("orderId") String orderId,
+    public ResponseEntity<?> payment(@PathVariable("orderId") String orderId,
                                      @Valid @RequestBody PaymentCreateRequest paymentCreateRequest) {
-        Long authorizedUserId = Long.valueOf(httpServletRequest.getHeader("X-USER-ID"));
 
-        paymentService.payment(authorizedUserId, Long.valueOf(orderId), paymentCreateRequest);
+        paymentService.payment(Long.valueOf(orderId), paymentCreateRequest);
 
         Map<String, Object> responseBody = new HashMap<>();
         responseBody.put("message", "결제 성공");

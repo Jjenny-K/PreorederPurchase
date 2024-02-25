@@ -9,6 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 public class OrderCheckResponse {
 
+    private Long userId;
     private ProductType productType;
     private Long productId;
     private Integer quantity;
