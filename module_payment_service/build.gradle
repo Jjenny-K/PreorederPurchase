@@ -11,6 +11,8 @@ dependencies {
 
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 
+    implementation "org.redisson:redisson-spring-boot-starter:3.21.1"
+
     implementation project(':module_core')
 }
 
