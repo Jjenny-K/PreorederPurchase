@@ -15,8 +15,16 @@ public class InternalReservedProductStockController {
 
     // 예약 상품 재고 등록
     @PostMapping()
-    public ResponseEntity<?> createProductStock(@RequestBody ReservedProductStockCreateRequest reservedProductStockCreateRequest) {
+    public ResponseEntity<?> createReservedProductStock(@RequestBody ReservedProductStockCreateRequest reservedProductStockCreateRequest) {
         internalReservedProductStockService.createReservedProductStock(reservedProductStockCreateRequest);
+
+        return ResponseEntity.ok().build();
+    }
+
+    // 예약 상품 재고 등록 to redis
+    @PostMapping("/{reservedProductId}")
+    public ResponseEntity<?> setReservedProductStock(@PathVariable("reservedProductId") String reservedProductId) {
+        internalReservedProductStockService.setReservedProductStock(reservedProductId);
 
         return ResponseEntity.ok().build();
     }
@@ -25,15 +33,14 @@ public class InternalReservedProductStockController {
     @GetMapping("/{reservedProductId}")
     public ResponseEntity<?> getProductStock(@PathVariable("reservedProductId") String reservedProductId) {
         return ResponseEntity.ok().body(
-                internalReservedProductStockService.getReservedProductStock(Long.parseLong(reservedProductId)));
+                internalReservedProductStockService.getReservedProductStock(reservedProductId));
     }
 
     // 예약 상품 재고 감소
     @PostMapping("/{reservedProductId}/decreasedStock")
     public ResponseEntity<?> decreasedReservedProductStock(@PathVariable("reservedProductId") String reservedProductId,
                                                            @RequestParam(name = "quantity") String quantity) {
-        internalReservedProductStockService.decreasedReservedProductStock(
-                Long.valueOf(reservedProductId), Integer.valueOf(quantity));
+        internalReservedProductStockService.decreasedReservedProductStock(reservedProductId, Long.valueOf(quantity));
 
         return ResponseEntity.ok().build();
     }

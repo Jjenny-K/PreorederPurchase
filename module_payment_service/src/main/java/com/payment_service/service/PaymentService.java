@@ -29,7 +29,7 @@ public class PaymentService {
     private final ReservedProductClient reservedProductClient;
     private final StockClient stockClient;
     private final OrderClient orderClient;
-    private final RedisLockService redisLockService;
+//    private final RedisLockService redisLockService;
 
     // 일반 상품 결제 진입
     @Transactional
@@ -65,7 +65,7 @@ public class PaymentService {
         // 구매 수량과 재고 비교
         Integer reservedProductStock = stockClient.getReservedProductStock(String.valueOf(reservedProductId));
 
-        if (reservedProductStock <= 0) {
+        if (reservedProductStock == 0) {
             throw new RuntimeException("구매할 수 있는 상품이 없습니다.");
         }
 
@@ -98,16 +98,16 @@ public class PaymentService {
         }
 
         // 재고 감소
-//        switch (order.getProductType()) {
-//            case NORMAL ->
-//                    stockClient.decreasedProductStock(
-//                            String.valueOf(order.getProductId()), String.valueOf(order.getQuantity()));
-//
-//            case RESERVED ->
-//                    stockClient.decreasedReservedProductStock(
-//                            String.valueOf(order.getProductId()), String.valueOf(order.getQuantity()));
-//        }
-        redisLockService.decreasedStock(order);
+        switch (order.getProductType()) {
+            case NORMAL ->
+                    stockClient.decreasedProductStock(
+                            String.valueOf(order.getProductId()), String.valueOf(order.getQuantity()));
+
+            case RESERVED ->
+                    stockClient.decreasedReservedProductStock(
+                            String.valueOf(order.getProductId()), String.valueOf(order.getQuantity()));
+        }
+//        redisLockService.decreasedStock(order);
 
         // 결제서 발행
         Payment payment = Payment.builder()
