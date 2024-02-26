@@ -56,20 +56,20 @@ public class InternalReservedProductStockService {
             throw new RuntimeException("해당 상품의 재고가 부족합니다.");
         }
 
-//        Integer updatedStock = reservedProductStock.getStock() - quantity;
+        Integer updatedStock = reservedProductStock.getStock() - quantity;
+
+        reservedProductStock.updateStock(updatedStock);
+
+//        // 예약 상품 재고 감소 + redis
+//        String strProductId = String.valueOf(productId);
+//        String strStock = String.valueOf(reservedProductStock.getStock());
 //
-//        reservedProductStock.updateStock(updatedStock);
-
-        // 예약 상품 재고 감소 + redis
-        String strProductId = String.valueOf(productId);
-        String strStock = String.valueOf(reservedProductStock.getStock());
-
-        ValueOperations<String, String> stockOperations = redisTemplate.opsForValue();
-        stockOperations.set(strProductId, strStock);
-
-        Integer updatedStock = redisTemplate.opsForValue().decrement(strProductId, quantity).intValue();
-
-        reservedProductStock.updateStock(updatedStock <= 0 ? 0 : updatedStock);
+//        ValueOperations<String, String> stockOperations = redisTemplate.opsForValue();
+//        stockOperations.set(strProductId, strStock);
+//
+//        Integer updatedStock = redisTemplate.opsForValue().decrement(strProductId, quantity).intValue();
+//
+//        reservedProductStock.updateStock(updatedStock <= 0 ? 0 : updatedStock);
     }
 
 }

@@ -29,6 +29,7 @@ public class PaymentService {
     private final ReservedProductClient reservedProductClient;
     private final StockClient stockClient;
     private final OrderClient orderClient;
+    private final RedisLockService redisLockService;
 
     // 일반 상품 결제 진입
     @Transactional
@@ -86,7 +87,7 @@ public class PaymentService {
 
     // 상품 결제
     @Transactional
-    public void payment(Long orderId, PaymentCreateRequest paymentCreateRequest) {
+    public void payment(Long orderId, PaymentCreateRequest paymentCreateRequest) throws InterruptedException {
         OrderCheckResponse order = orderClient.getOrder(String.valueOf(orderId));
 
         // 결제 실패 시나리오
@@ -97,15 +98,16 @@ public class PaymentService {
         }
 
         // 재고 감소
-        switch (order.getProductType()) {
-            case NORMAL ->
-                    stockClient.decreasedProductStock(
-                            String.valueOf(order.getProductId()), String.valueOf(order.getQuantity()));
-
-            case RESERVED ->
-                    stockClient.decreasedReservedProductStock(
-                            String.valueOf(order.getProductId()), String.valueOf(order.getQuantity()));
-        }
+//        switch (order.getProductType()) {
+//            case NORMAL ->
+//                    stockClient.decreasedProductStock(
+//                            String.valueOf(order.getProductId()), String.valueOf(order.getQuantity()));
+//
+//            case RESERVED ->
+//                    stockClient.decreasedReservedProductStock(
+//                            String.valueOf(order.getProductId()), String.valueOf(order.getQuantity()));
+//        }
+        redisLockService.decreasedStock(order);
 
         // 결제서 발행
         Payment payment = Payment.builder()

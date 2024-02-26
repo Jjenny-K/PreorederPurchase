@@ -55,7 +55,8 @@ public class PaymentController {
     // 상품 결제
     @PostMapping("/orders/{orderId}")
     public ResponseEntity<?> payment(@PathVariable("orderId") String orderId,
-                                     @Valid @RequestBody PaymentCreateRequest paymentCreateRequest) {
+                                     @Valid @RequestBody PaymentCreateRequest paymentCreateRequest)
+            throws InterruptedException {
 
         paymentService.payment(Long.valueOf(orderId), paymentCreateRequest);
 
