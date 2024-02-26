@@ -53,7 +53,9 @@ public class InternalProductStockService {
             throw new RuntimeException("해당 상품의 재고가 부족합니다.");
         }
 
-        productStock.updateStock(quantity);
+        Integer updatedStock = productStock.getStock() - quantity;
+
+        productStock.updateStock(updatedStock);
     }
 
 
