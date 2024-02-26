@@ -35,6 +35,11 @@ public class PaymentService {
     @Transactional
     public Integer enterPaymentProduct(Long authorizedUserId, Long productId,
                                        EnterPaymentRequest enterPaymentRequest) {
+        // 결제 진입 실패 시나리오
+        if (Math.random() <= 0.2) {
+            throw new RuntimeException("결제 진입 실패");
+        }
+
         // 구매 수량과 재고 비교
         Integer productStock = stockClient.getProductStock(String.valueOf(productId));
 
@@ -62,6 +67,11 @@ public class PaymentService {
     @Transactional
     public Integer enterPaymentReservedProduct(Long authorizedUserId, Long reservedProductId,
                                                EnterPaymentRequest enterPaymentRequest) {
+        // 결제 진입 실패 시나리오
+        if (Math.random() <= 0.2) {
+            throw new RuntimeException("결제 진입 실패");
+        }
+
         // 구매 수량과 재고 비교
         Integer reservedProductStock = stockClient.getReservedProductStock(String.valueOf(reservedProductId));
 
