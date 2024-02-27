@@ -66,4 +66,12 @@ public class InternalReservedProductStockService {
         reservedProductStock.updateStock(updatedStock);
     }
 
+    // 예약 상품 재고 증가
+    @Transactional
+    public void increasedReservedProductStock(String reservedProductId, Long quantity) {
+        Integer updatedStock = redisStockService.increasedStock(reservedProductId, quantity).intValue();
+
+        updatedReservedProductStock(Long.valueOf(reservedProductId), updatedStock);
+    }
+
 }

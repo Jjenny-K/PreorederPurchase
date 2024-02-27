@@ -41,4 +41,9 @@ public class RedisStockService {
 
         return savedStock;
     }
+
+    // 재고 증가
+    public Long increasedStock(String key, Long quantity) {
+        return redisTemplate.opsForValue().increment(key, quantity);
+    }
 }

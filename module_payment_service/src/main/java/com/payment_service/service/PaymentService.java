@@ -29,7 +29,6 @@ public class PaymentService {
     private final ReservedProductClient reservedProductClient;
     private final StockClient stockClient;
     private final OrderClient orderClient;
-//    private final RedisLockService redisLockService;
 
     // 일반 상품 결제 진입
     @Transactional
@@ -43,13 +42,17 @@ public class PaymentService {
         // 구매 수량과 재고 비교
         Integer productStock = stockClient.getProductStock(String.valueOf(productId));
 
-        if (productStock <= 0) {
+        if (productStock == 0) {
             throw new RuntimeException("구매할 수 있는 상품이 없습니다.");
         }
 
         if (productStock < enterPaymentRequest.getQuantity()) {
             throw new RuntimeException("구매 수량은 상품의 재고를 넘을 수 없습니다.");
         }
+
+        // 재고 감소
+        stockClient.decreasedProductStock(
+                String.valueOf(productId), String.valueOf(enterPaymentRequest.getQuantity()));
 
         // 주문서 발행
         orderClient.createOrder(
@@ -83,6 +86,10 @@ public class PaymentService {
             throw new RuntimeException("구매 수량은 상품의 재고를 넘을 수 없습니다.");
         }
 
+        // 재고 감소
+        stockClient.decreasedReservedProductStock(
+                String.valueOf(reservedProductId), String.valueOf(enterPaymentRequest.getQuantity()));
+
         // 주문서 발행
         orderClient.createOrder(
                 new OrderCreateRequest(
@@ -104,20 +111,19 @@ public class PaymentService {
         if (Math.random() <= 0.2) {
             orderClient.deleteOrder(String.valueOf(orderId));
 
+            // 재고 증가
+            switch (order.getProductType()) {
+                case NORMAL ->
+                        stockClient.increasedProductStock(
+                                String.valueOf(order.getProductId()), String.valueOf(order.getQuantity()));
+
+                case RESERVED ->
+                        stockClient.increasedReservedProductStock(
+                                String.valueOf(order.getProductId()), String.valueOf(order.getQuantity()));
+            }
+
             throw new RuntimeException("결제 실패");
         }
-
-        // 재고 감소
-        switch (order.getProductType()) {
-            case NORMAL ->
-                    stockClient.decreasedProductStock(
-                            String.valueOf(order.getProductId()), String.valueOf(order.getQuantity()));
-
-            case RESERVED ->
-                    stockClient.decreasedReservedProductStock(
-                            String.valueOf(order.getProductId()), String.valueOf(order.getQuantity()));
-        }
-//        redisLockService.decreasedStock(order);
 
         // 결제서 발행
         Payment payment = Payment.builder()

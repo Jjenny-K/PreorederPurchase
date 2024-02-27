@@ -45,18 +45,21 @@ public class InternalProductStockService {
                 productStockRepository.findByProductId(productId)
                         .orElseThrow(() -> new RuntimeException("해당 상품의 재고가 존재하지 않습니다."));
 
-        if (productStock.getStock() <= 0) {
-            throw new RuntimeException("해당 상품의 재고가 존재하지 않습니다.");
-        }
-
-        if (productStock.getStock() < quantity) {
-            throw new RuntimeException("해당 상품의 재고가 부족합니다.");
-        }
-
         Integer updatedStock = productStock.getStock() - quantity;
 
         productStock.updateStock(updatedStock);
     }
 
+    // 일반 상품 재고 증가
+    @Transactional
+    public void increasedProductStock(Long productId, Integer quantity) {
+        ProductStock productStock =
+                productStockRepository.findByProductId(productId)
+                        .orElseThrow(() -> new RuntimeException("해당 상품의 재고가 존재하지 않습니다."));
+
+        Integer updatedStock = productStock.getStock() + quantity;
+
+        productStock.updateStock(updatedStock);
+    }
 
 }

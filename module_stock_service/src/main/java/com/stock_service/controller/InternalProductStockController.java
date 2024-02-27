@@ -37,4 +37,14 @@ public class InternalProductStockController {
         return ResponseEntity.ok().build();
     }
 
+    // 일반 상품 재고 증가
+    @PostMapping("/{productId}/increasedStock")
+    public ResponseEntity<?> increasedProductStock(@PathVariable("productId") String productId,
+                                                   @RequestParam(name = "quantity") String quantity) {
+        internalProductStockService.increasedProductStock(
+                Long.valueOf(productId), Integer.valueOf(quantity));
+
+        return ResponseEntity.ok().build();
+    }
+
 }

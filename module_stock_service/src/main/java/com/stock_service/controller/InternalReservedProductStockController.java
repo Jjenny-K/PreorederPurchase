@@ -45,4 +45,13 @@ public class InternalReservedProductStockController {
         return ResponseEntity.ok().build();
     }
 
+    // 예약 상품 재고 증가
+    @PostMapping("/{reservedProductId}/increasedStock")
+    public ResponseEntity<?> increasedReservedProductStock(@PathVariable("reservedProductId") String reservedProductId,
+                                                           @RequestParam(name = "quantity") String quantity) {
+        internalReservedProductStockService.increasedReservedProductStock(reservedProductId, Long.valueOf(quantity));
+
+        return ResponseEntity.ok().build();
+    }
+
 }

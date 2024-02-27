@@ -23,4 +23,12 @@ public interface StockClient {
     void decreasedReservedProductStock(@PathVariable("reservedProductId") String reservedProductId,
                                        @RequestParam(name = "quantity") String quantity);
 
+    @PostMapping("/api/internal/productStocks/{productId}/increasedStock")
+    void increasedProductStock(@PathVariable("productId") String productId,
+                               @RequestParam(name = "quantity") String quantity);
+
+    @PostMapping("/api/internal/reservedProductStocks/{reservedProductId}/increasedStock")
+    void increasedReservedProductStock(@PathVariable("reservedProductId") String reservedProductId,
+                                       @RequestParam(name = "quantity") String quantity);
+
 }
