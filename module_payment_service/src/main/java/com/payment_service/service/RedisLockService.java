@@ -1,7 +1,8 @@
 package com.payment_service.service;
 
 import com.core.dto.response.OrderCheckResponse;
-import com.payment_service.client.StockClient;
+import com.payment_service.client.ProductStockClient;
+import com.payment_service.client.ReservedProductStockClient;
 import lombok.RequiredArgsConstructor;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
@@ -28,7 +29,8 @@ public class RedisLockService {
     private String LOCK_SUFFIX;
 
     private final RedissonClient redissonClient;
-    private final StockClient stockClient;
+    private final ProductStockClient productStockClient;
+    private final ReservedProductStockClient reservedProductStockClient;
 
     // 재고 감소 + redis 분산 락
     public void decreasedStock(OrderCheckResponse order) throws InterruptedException {
@@ -46,11 +48,11 @@ public class RedisLockService {
 
             switch (order.getProductType()) {
                 case NORMAL ->
-                        stockClient.decreasedProductStock(
+                        productStockClient.decreasedProductStock(
                                 String.valueOf(order.getProductId()), String.valueOf(order.getQuantity()));
 
                 case RESERVED ->
-                        stockClient.decreasedReservedProductStock(
+                        reservedProductStockClient.decreasedReservedProductStock(
                                 String.valueOf(order.getProductId()), String.valueOf(order.getQuantity()));
             }
         } finally {

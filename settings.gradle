@@ -7,6 +7,7 @@ include 'module_api_gateway'
 
 include 'module_product_service'
 include 'module_reserved_product_service'
-include 'module_stock_service'
+include 'module_product_stock_service'
+include 'module_reserved_product_stock_service'
 include 'module_order_service'
 include 'module_payment_service'
