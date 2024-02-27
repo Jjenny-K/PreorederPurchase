@@ -9,7 +9,7 @@ import java.util.List;
 @FeignClient(name = "reservedProductClient", url = "${internal.client.uri}")
 public interface ReservedProductClient {
 
-    @GetMapping("/api/internal/reservedProducts/getReservedProductList")
+    @GetMapping("/api/internal/reserved-products/get-reserved-product-list")
     List<ProductListResponse> getReservedProductList();
 
 }

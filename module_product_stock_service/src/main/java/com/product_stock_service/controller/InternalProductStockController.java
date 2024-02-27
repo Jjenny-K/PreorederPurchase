@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/internal/productStocks")
+@RequestMapping("/api/internal/product-stocks")
 public class InternalProductStockController {
 
     private final InternalProductStockService internalProductStockService;
@@ -28,7 +28,7 @@ public class InternalProductStockController {
     }
 
     // 일반 상품 재고 감소
-    @PostMapping("/{productId}/decreasedStock")
+    @PostMapping("/{productId}/decreased-stock")
     public ResponseEntity<?> decreasedProductStock(@PathVariable("productId") String productId,
                                                    @RequestParam(name = "quantity") String quantity) {
         internalProductStockService.decreasedProductStock(
@@ -38,7 +38,7 @@ public class InternalProductStockController {
     }
 
     // 일반 상품 재고 증가
-    @PostMapping("/{productId}/increasedStock")
+    @PostMapping("/{productId}/increased-stock")
     public ResponseEntity<?> increasedProductStock(@PathVariable("productId") String productId,
                                                    @RequestParam(name = "quantity") String quantity) {
         internalProductStockService.increasedProductStock(

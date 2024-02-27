@@ -37,7 +37,7 @@ public class PaymentController {
     }
 
     // 예약 상품 결제 진입
-    @PostMapping("/reservedProducts/{reservedProductId}")
+    @PostMapping("/reserved-products/{reservedProductId}")
     public ResponseEntity<?> enterPaymentReservedProduct(HttpServletRequest httpServletRequest,
                                                          @PathVariable("reservedProductId") String reservedProductId,
                                                          @Valid @RequestBody EnterPaymentRequest enterPaymentRequest) {

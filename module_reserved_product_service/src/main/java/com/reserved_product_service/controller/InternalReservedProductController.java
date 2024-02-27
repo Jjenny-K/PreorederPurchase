@@ -17,13 +17,13 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/internal/reservedProducts")
+@RequestMapping("/api/internal/reserved-products")
 public class InternalReservedProductController {
 
     private final InternalReservedProductService internalReservedProductService;
 
     // 예약 상품 목록 조회
-    @GetMapping("/getReservedProductList")
+    @GetMapping("/get-reserved-product-list")
     public ResponseEntity<?> getReservedProductList() {
         List<ReservedProduct> reservedProducts = internalReservedProductService.getReservedProductList();
 
@@ -48,7 +48,7 @@ public class InternalReservedProductController {
     }
 
     // 예약 상품 가격 조회
-    @GetMapping("/{reservedProductId}/getPrice")
+    @GetMapping("/{reservedProductId}/get-price")
     public ResponseEntity<?> findReservedProduct(@PathVariable("reservedProductId") String reservedProductId) {
         Integer reservedProductPrice =
                 internalReservedProductService.getReservedProductPrice(Long.valueOf(reservedProductId));

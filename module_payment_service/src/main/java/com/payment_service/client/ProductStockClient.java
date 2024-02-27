@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(name = "productStockClient", url = "${internal.client.uri}")
 public interface ProductStockClient {
 
-    @GetMapping("/api/internal/productStocks/{productId}")
+    @GetMapping("/api/internal/product-stocks/{productId}")
     Integer getProductStock(@PathVariable("productId") String productId);
 
-    @PostMapping("/api/internal/productStocks/{productId}/decreasedStock")
+    @PostMapping("/api/internal/product-stocks/{productId}/decreased-stock")
     void decreasedProductStock(@PathVariable("productId") String productId,
                                @RequestParam(name = "quantity") String quantity);
 
-    @PostMapping("/api/internal/productStocks/{productId}/increasedStock")
+    @PostMapping("/api/internal/product-stocks/{productId}/increased-stock")
     void increasedProductStock(@PathVariable("productId") String productId,
                                @RequestParam(name = "quantity") String quantity);
 

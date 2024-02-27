@@ -15,7 +15,7 @@ import java.util.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/reservedProducts")
+@RequestMapping("/api/reserved-products")
 public class ReservedProductController {
 
     private final ReservedProductService reservedProductService;

@@ -16,7 +16,7 @@ public class InternalProductController {
     private final InternalProductService internalProductService;
 
     // 일반 상품 가격 조회
-    @GetMapping("/{productId}/getPrice")
+    @GetMapping("/{productId}/get-price")
     public ResponseEntity<?> getProductPrice(@PathVariable("productId") String productId) {
         Integer productPrice = internalProductService.getProductPrice(Long.valueOf(productId));
 
