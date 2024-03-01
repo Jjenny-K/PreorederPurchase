@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @FeignClient(name = "StockClient", url = "${internal.client.uri}")
 public interface StockClient {
 
-    @PostMapping("/api/internal/reservedProductStocks")
+    @PostMapping("/api/internal/reserved-product-stocks")
     void createReservedProductStock(ReservedProductStockCreateRequest reservedProductStockCreateRequest);
 
 }

@@ -37,7 +37,7 @@ public class PaymentController {
     }
 
     // 예약 상품 결제 진입
-    @PostMapping("/reservedProducts/{reservedProductId}")
+    @PostMapping("/reserved-products/{reservedProductId}")
     public ResponseEntity<?> enterPaymentReservedProduct(HttpServletRequest httpServletRequest,
                                                          @PathVariable("reservedProductId") String reservedProductId,
                                                          @Valid @RequestBody EnterPaymentRequest enterPaymentRequest) {
@@ -54,12 +54,11 @@ public class PaymentController {
 
     // 상품 결제
     @PostMapping("/orders/{orderId}")
-    public ResponseEntity<?> payment(HttpServletRequest httpServletRequest,
-                                     @PathVariable("orderId") String orderId,
-                                     @Valid @RequestBody PaymentCreateRequest paymentCreateRequest) {
-        Long authorizedUserId = Long.valueOf(httpServletRequest.getHeader("X-USER-ID"));
+    public ResponseEntity<?> payment(@PathVariable("orderId") String orderId,
+                                     @Valid @RequestBody PaymentCreateRequest paymentCreateRequest)
+            throws InterruptedException {
 
-        paymentService.payment(authorizedUserId, Long.valueOf(orderId), paymentCreateRequest);
+        paymentService.payment(Long.valueOf(orderId), paymentCreateRequest);
 
         Map<String, Object> responseBody = new HashMap<>();
         responseBody.put("message", "결제 성공");

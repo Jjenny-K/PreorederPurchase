@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @FeignClient(name = "reservedProductClient", url = "${internal.client.uri}")
 public interface ReservedProductClient {
 
-    @GetMapping("/api/internal/reservedProducts/{reservedProductId}/getPrice")
+    @GetMapping("/api/internal/reserved-products/{reservedProductId}/get-price")
     Integer getReservedProductPrice(@PathVariable("reservedProductId") String reservedProductId);
 
 }

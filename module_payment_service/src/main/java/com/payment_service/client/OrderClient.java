@@ -13,8 +13,7 @@ public interface OrderClient {
     void createOrder(@RequestBody OrderCreateRequest orderCreateRequest);
 
     @GetMapping("/api/internal/orders/{orderId}")
-    OrderCheckResponse checkOrder(@PathVariable("orderId") String orderId,
-                                  @RequestParam(name = "userId") String userID);
+    OrderCheckResponse getOrder(@PathVariable("orderId") String orderId);
 
     @PutMapping("/api/internal/orders/{orderId}")
     void updateOrder(@PathVariable("orderId") String orderId,

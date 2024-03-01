@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @FeignClient(name = "productClient", url = "${internal.client.uri}")
 public interface ProductClient {
 
-    @GetMapping("/api/internal/products/{productId}/getPrice")
+    @GetMapping("/api/internal/products/{productId}/get-price")
     Integer getProductPrice(@PathVariable("productId") String productId);
 
 }

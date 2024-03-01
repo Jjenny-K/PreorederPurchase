@@ -2,10 +2,7 @@ package com.payment_service.service;
 
 import com.core.dto.response.OrderCheckResponse;
 import com.core.entity.type.ProductType;
-import com.payment_service.client.OrderClient;
-import com.payment_service.client.ProductClient;
-import com.payment_service.client.ReservedProductClient;
-import com.payment_service.client.StockClient;
+import com.payment_service.client.*;
 import com.payment_service.dto.request.EnterPaymentRequest;
 import com.payment_service.dto.request.OrderCreateRequest;
 import com.payment_service.dto.request.OrderUpdateRequest;
@@ -27,23 +24,34 @@ public class PaymentService {
     private final PaymentRepository paymentRepository;
     private final ProductClient productClient;
     private final ReservedProductClient reservedProductClient;
-    private final StockClient stockClient;
+    private final ProductStockClient productStockClient;
+    private final ReservedProductStockClient reservedProductStockClient;
     private final OrderClient orderClient;
 
     // 일반 상품 결제 진입
     @Transactional
     public Integer enterPaymentProduct(Long authorizedUserId, Long productId,
                                        EnterPaymentRequest enterPaymentRequest) {
-        // 구매 수량과 재고 비교
-        Integer productStock = stockClient.getProductStock(String.valueOf(productId));
+        // 결제 진입 실패 시나리오
+        if (Math.random() <= 0.2) {
+            throw new RuntimeException("결제 진입 실패");
+        }
 
-        if (productStock <= 0) {
+        // 구매 수량과 재고 비교
+        Integer productStock =
+                productStockClient.getProductStock(String.valueOf(productId));
+
+        if (productStock == 0) {
             throw new RuntimeException("구매할 수 있는 상품이 없습니다.");
         }
 
         if (productStock < enterPaymentRequest.getQuantity()) {
             throw new RuntimeException("구매 수량은 상품의 재고를 넘을 수 없습니다.");
         }
+
+        // 재고 감소
+        productStockClient.decreasedProductStock(
+                String.valueOf(productId), String.valueOf(enterPaymentRequest.getQuantity()));
 
         // 주문서 발행
         orderClient.createOrder(
@@ -61,16 +69,26 @@ public class PaymentService {
     @Transactional
     public Integer enterPaymentReservedProduct(Long authorizedUserId, Long reservedProductId,
                                                EnterPaymentRequest enterPaymentRequest) {
-        // 구매 수량과 재고 비교
-        Integer reservedProductStock = stockClient.getReservedProductStock(String.valueOf(reservedProductId));
+        // 결제 진입 실패 시나리오
+        if (Math.random() <= 0.2) {
+            throw new RuntimeException("결제 진입 실패");
+        }
 
-        if (reservedProductStock <= 0) {
+        // 구매 수량과 재고 비교
+        Integer reservedProductStock =
+                reservedProductStockClient.getReservedProductStock(String.valueOf(reservedProductId));
+
+        if (reservedProductStock == 0) {
             throw new RuntimeException("구매할 수 있는 상품이 없습니다.");
         }
 
         if (reservedProductStock < enterPaymentRequest.getQuantity()) {
             throw new RuntimeException("구매 수량은 상품의 재고를 넘을 수 없습니다.");
         }
+
+        // 재고 감소
+        reservedProductStockClient.decreasedReservedProductStock(
+                String.valueOf(reservedProductId), String.valueOf(enterPaymentRequest.getQuantity()));
 
         // 주문서 발행
         orderClient.createOrder(
@@ -86,31 +104,30 @@ public class PaymentService {
 
     // 상품 결제
     @Transactional
-    public void payment(Long authorizedUserId, Long orderId, PaymentCreateRequest paymentCreateRequest) {
-        OrderCheckResponse order =
-                orderClient.checkOrder(String.valueOf(orderId), String.valueOf(authorizedUserId));
+    public void payment(Long orderId, PaymentCreateRequest paymentCreateRequest) throws InterruptedException {
+        OrderCheckResponse order = orderClient.getOrder(String.valueOf(orderId));
 
         // 결제 실패 시나리오
         if (Math.random() <= 0.2) {
             orderClient.deleteOrder(String.valueOf(orderId));
 
+            // 재고 증가
+            switch (order.getProductType()) {
+                case NORMAL ->
+                        productStockClient.increasedProductStock(
+                                String.valueOf(order.getProductId()), String.valueOf(order.getQuantity()));
+
+                case RESERVED ->
+                        reservedProductStockClient.increasedReservedProductStock(
+                                String.valueOf(order.getProductId()), String.valueOf(order.getQuantity()));
+            }
+
             throw new RuntimeException("결제 실패");
-        }
-
-        // 재고 감소
-        switch (order.getProductType()) {
-            case NORMAL ->
-                    stockClient.decreasedProductStock(
-                            String.valueOf(order.getProductId()), String.valueOf(order.getQuantity()));
-
-            case RESERVED ->
-                    stockClient.decreasedReservedProductStock(
-                            String.valueOf(order.getProductId()), String.valueOf(order.getQuantity()));
         }
 
         // 결제서 발행
         Payment payment = Payment.builder()
-                .userId(authorizedUserId)
+                .userId(order.getUserId())
                 .orderId(orderId)
                 .totalPayment(paymentCreateRequest.getTotalPayment())
                 .build();
