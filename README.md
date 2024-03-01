@@ -1,13 +1,33 @@
-# Preorder-Purchase
-사용자가 상품을 등록하고 예약 거래하는 REST API 구현
+# Pre-order-Purchase
+사용자가 상품을 등록하고 상품을 거래하는 REST API 구현
 
-## Task interpretation
-해당 기능을 사용할 수 있는 권한이 있는 client(게시글 게시자, 서비스 이용자 등)에게 상픔 예약 거래 기능을 제공하는 서비스로 해석하였습니다.
+## Task goal
+> 고유의 권한을 가진 사용자의 존재를 가정하고 API가 구현되었습니다.  
+
+해당 기능을 사용할 수 있는 권한이 있는 client(상품 게시자, 서비스 이용자 등)에게 일반적인 거래 기능, 예정된 시간 내 거래 기능을 제공합니다.
+
+## Index
+- [기술 스택](#tech-stack)
+- [애플리케이션 아키텍쳐](#architecture)
+- [데이터베이스 테이블 구조](#erd)
+- [API 명세](#api-specification)
+- [구현 과정](#implementation-process)
+- [애플리케이션 실행 방법](#step-to-run)
 
 ## Implementation
 
 ### Tech Stack
 <img src="https://img.shields.io/badge/Java-437291?style=flat-square&logo=OpenJDK&logoColor=white"/> <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=flat-square&logo=Spring Boot&logoColor=white"/> <img src="https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=MySQL&logoColor=white"/> <img src="https://img.shields.io/badge/IntelliJ-000000?style=flat-square&logo=IntelliJ IDEA&logoColor=white"/> <img src="https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=Docker&logoColor=white"/>
+
+### Architecture
+![architecture drawio](https://github.com/Jjenny-K/PreorederPurchase/assets/96185029/85eb720d-46e7-40c9-b5d4-92c6e6a4519e)
+
+### ERD
+![erd](https://github.com/Jjenny-K/PreorederPurchase/assets/96185029/e8dd31cb-9c16-407a-9f7c-c8e878a325cc)
+
+### API Specification
+
+### Implementation Process
 
 ### Step to run
 > window 환경에서 구현 및 실행되었습니다.
